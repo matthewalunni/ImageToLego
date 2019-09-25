@@ -10,13 +10,13 @@ namespace ImageToLego.Helper
 {
     class FormHelper
     {
-        public static string FileUploadPrompt()
+        public static string FileUploadPrompt(string filter)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.FileName = "Upload an Image";
-                ofd.Filter = "Image files(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-                ofd.Title = "Upload an Image";
+                ofd.FileName = "Upload a File";
+                ofd.Filter = filter;
+                ofd.Title = "Upload a File";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -41,7 +41,17 @@ namespace ImageToLego.Helper
 
         internal static bool ControlsAreFilled(params Control[] controls)
         {
+            foreach(var control in controls)
+            {
+                if (string.IsNullOrEmpty(control.Text))
+                {
+                    return false;
+                }
+            }
             return true;
         }
+
+        
+
     }
 }

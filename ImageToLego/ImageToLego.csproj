@@ -49,8 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\LegoPiece.cs" />
+    <Compile Include="Classes\PaletteProcessor.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Helper\CSVTools.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Helper\TypeCoversions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

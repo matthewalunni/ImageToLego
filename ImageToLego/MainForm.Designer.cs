@@ -31,12 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tbImagePath = new System.Windows.Forms.TextBox();
             this.btnUpload = new System.Windows.Forms.Button();
-            this.cbImageSize = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dgvOutput = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnColorPalette = new System.Windows.Forms.Button();
+            this.tbCSVPath = new System.Windows.Forms.TextBox();
+            this.btnProcess = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,24 +58,6 @@
             this.btnUpload.Text = "...";
             this.btnUpload.UseVisualStyleBackColor = true;
             this.btnUpload.Click += new System.EventHandler(this.BtnUpload_Click);
-            // 
-            // cbImageSize
-            // 
-            this.cbImageSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbImageSize.FormattingEnabled = true;
-            this.cbImageSize.Location = new System.Drawing.Point(515, 75);
-            this.cbImageSize.Name = "cbImageSize";
-            this.cbImageSize.Size = new System.Drawing.Size(269, 21);
-            this.cbImageSize.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(444, 78);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Image Size: ";
             // 
             // label2
             // 
@@ -108,17 +92,55 @@
             this.panel1.Size = new System.Drawing.Size(423, 426);
             this.panel1.TabIndex = 8;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(444, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(157, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Color Palette As CSV (Optional):";
+            // 
+            // btnColorPalette
+            // 
+            this.btnColorPalette.Location = new System.Drawing.Point(709, 82);
+            this.btnColorPalette.Name = "btnColorPalette";
+            this.btnColorPalette.Size = new System.Drawing.Size(75, 23);
+            this.btnColorPalette.TabIndex = 10;
+            this.btnColorPalette.Text = "...";
+            this.btnColorPalette.UseVisualStyleBackColor = true;
+            this.btnColorPalette.Click += new System.EventHandler(this.BtnColorPalette_Click);
+            // 
+            // tbCSVPath
+            // 
+            this.tbCSVPath.Location = new System.Drawing.Point(445, 84);
+            this.tbCSVPath.Name = "tbCSVPath";
+            this.tbCSVPath.Size = new System.Drawing.Size(258, 20);
+            this.tbCSVPath.TabIndex = 9;
+            // 
+            // btnProcess
+            // 
+            this.btnProcess.Location = new System.Drawing.Point(360, 445);
+            this.btnProcess.Name = "btnProcess";
+            this.btnProcess.Size = new System.Drawing.Size(75, 23);
+            this.btnProcess.TabIndex = 12;
+            this.btnProcess.Text = "Process";
+            this.btnProcess.UseVisualStyleBackColor = true;
+            this.btnProcess.Click += new System.EventHandler(this.BtnProcess_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 450);
+            this.ClientSize = new System.Drawing.Size(796, 474);
+            this.Controls.Add(this.btnProcess);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnColorPalette);
+            this.Controls.Add(this.tbCSVPath);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dgvOutput);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cbImageSize);
             this.Controls.Add(this.btnUpload);
             this.Controls.Add(this.tbImagePath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -133,12 +155,14 @@
         #endregion
         private System.Windows.Forms.TextBox tbImagePath;
         private System.Windows.Forms.Button btnUpload;
-        private System.Windows.Forms.ComboBox cbImageSize;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgvOutput;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnColorPalette;
+        private System.Windows.Forms.TextBox tbCSVPath;
+        private System.Windows.Forms.Button btnProcess;
     }
 }
 
