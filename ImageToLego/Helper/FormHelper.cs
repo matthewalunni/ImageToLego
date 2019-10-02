@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,11 @@ namespace ImageToLego.Helper
 {
     class FormHelper
     {
+        /// <summary>
+        /// this method prompts a user to upload a file.
+        /// </summary>
+        /// <param name="filter">string filter used to specify file types</param>
+        /// <returns>a string filepath</returns>
         public static string FileUploadPrompt(string filter)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -38,7 +44,11 @@ namespace ImageToLego.Helper
         }
 
 
-
+        /// <summary>
+        /// this method checks if controls are filled on a form
+        /// </summary>
+        /// <param name="controls">controls to be checked</param>
+        /// <returns>true if controls are filled</returns>
         internal static bool ControlsAreFilled(params Control[] controls)
         {
             foreach(var control in controls)
@@ -51,7 +61,20 @@ namespace ImageToLego.Helper
             return true;
         }
 
-        
+        /// <summary>
+        /// this method adds headers to a specified datagridview
+        /// columns are named their header text
+        /// </summary>
+        /// <param name="dgv">datagridview for headers to be added to</param>
+        /// <param name="headers">list of columns to make</param>
+        public static void AddDataGridViewHeaders(DataGridView dgv, params string[] headers)
+        {
 
+            foreach (var head in headers)
+            {
+                dgv.Columns.Add(head, head);
+            }
+
+        }
     }
 }

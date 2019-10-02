@@ -38,7 +38,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnColorPalette = new System.Windows.Forms.Button();
             this.tbCSVPath = new System.Windows.Forms.TextBox();
-            this.btnProcess = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,6 +69,7 @@
             // 
             // dgvOutput
             // 
+            this.dgvOutput.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOutput.Location = new System.Drawing.Point(445, 123);
             this.dgvOutput.Name = "dgvOutput";
@@ -118,22 +118,11 @@
             this.tbCSVPath.Size = new System.Drawing.Size(258, 20);
             this.tbCSVPath.TabIndex = 9;
             // 
-            // btnProcess
-            // 
-            this.btnProcess.Location = new System.Drawing.Point(360, 445);
-            this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(75, 23);
-            this.btnProcess.TabIndex = 12;
-            this.btnProcess.Text = "Process";
-            this.btnProcess.UseVisualStyleBackColor = true;
-            this.btnProcess.Click += new System.EventHandler(this.BtnProcess_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 474);
-            this.Controls.Add(this.btnProcess);
+            this.ClientSize = new System.Drawing.Size(796, 448);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnColorPalette);
             this.Controls.Add(this.tbCSVPath);
@@ -162,7 +151,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnColorPalette;
         private System.Windows.Forms.TextBox tbCSVPath;
-        private System.Windows.Forms.Button btnProcess;
     }
 }
 

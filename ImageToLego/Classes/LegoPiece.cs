@@ -10,7 +10,7 @@ namespace ImageToLego.Classes
     class LegoPiece
     {
         private string colourName;
-        private Color rgbValues;
+        public Color color;
         public int size; //assuming we can only get pieces of height 1
         private int x;
         private int y;
@@ -18,14 +18,14 @@ namespace ImageToLego.Classes
         public LegoPiece(Color color, int size)
         {
             this.size = size;
-            this.rgbValues = color;
+            this.color = color;
         }
 
         public LegoPiece(Color color, int x, int y)
         {
             this.x = x;
             this.y = y;
-            this.rgbValues = color;
+            this.color = color;
         }
 
 
@@ -35,7 +35,7 @@ namespace ImageToLego.Classes
 
         public string ToCSVLine()
         {
-            return rgbValues.ToString() + ", " + size.ToString();
+            return color.ToString() + ", " + size.ToString();
         }
 
 
