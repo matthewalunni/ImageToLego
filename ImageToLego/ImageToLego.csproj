@@ -57,7 +57,7 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Helper\CSVTools.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="Helper\ListEventArgs.cs" />
+    <Compile Include="Helper\TwoDimensionalArrayHelper.cs" />
     <Compile Include="Helper\TypeCoversions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

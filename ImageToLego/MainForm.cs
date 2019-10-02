@@ -20,7 +20,7 @@ namespace ImageToLego
         private Dictionary<string, Color> palette;
         private string imagePath;
         private string CSVPath;
-        private int threshold = 100;
+        private int threshold = 80;
         private LegoPiece[,] individualPieces;
         #endregion
 
@@ -55,7 +55,45 @@ namespace ImageToLego
             CustomPanel clicked = (CustomPanel)sender;
             x = clicked.x;
             y = clicked.y;
-            MessageBox.Show(string.Format("x: {0} y: {1}", x, y));
+            Color[] aRow = img.Row(y);
+            int size = 1; // minumum size
+            List<LegoPiece> pieces = new List<LegoPiece>();
+            LegoPiece piece;
+            for (int i = 0; i < aRow.Length; i++)
+            {
+                if (i + 1 < aRow.Length)
+                {
+                    if (aRow[i].ClosestColor(palette.Values.ToList()).Equals(aRow[i + 1].ClosestColor(palette.Values.ToList())))
+                    {
+                        size++;
+                    }
+                    else
+                    {
+                        piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
+                        pieces.Add(piece);
+                        size = 1;
+                    }
+                }
+                else if (size >= aRow.Length)
+                {
+                    piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
+                    pieces.Add(piece);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+
+            string output = "";
+            foreach (var lego in pieces)
+            {
+                output += lego.ToCSVLine() + Environment.NewLine;
+            }
+
+            MessageBox.Show(output);
         }
 
         private void BtnUpload_Click(object sender, EventArgs e)
@@ -133,6 +171,7 @@ namespace ImageToLego
             
 
             //now this seems to be working...
+            //its buggy now but could be useful for generating totals
             LinkedList<LegoPiece> pieces = new LinkedList<LegoPiece>();
             for (int i = 0; i < img.GetLength(0); i++)
             {

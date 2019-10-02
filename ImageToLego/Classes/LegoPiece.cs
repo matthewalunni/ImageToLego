@@ -11,7 +11,7 @@ namespace ImageToLego.Classes
     {
         private string colourName;
         private Color rgbValues;
-        private int size; //assuming we can only get pieces of height 1
+        public int size; //assuming we can only get pieces of height 1
         private int x;
         private int y;
 
