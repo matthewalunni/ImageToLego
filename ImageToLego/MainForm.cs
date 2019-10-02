@@ -20,7 +20,7 @@ namespace ImageToLego
         private Dictionary<string, Color> palette;
         private string imagePath;
         private string CSVPath;
-        private int threshold = 10;
+        private int threshold = 100;
         private LegoPiece[,] individualPieces;
         #endregion
 
@@ -41,7 +41,7 @@ namespace ImageToLego
                 palette = new PaletteProcessor(CSVPath).ColorPalette;
                 AdjustColors();
                 DisplayGrid(img, panel1);
-                PopulateDataGridView();
+                //PopulateDataGridView();
             }
             else
             {
@@ -51,7 +51,11 @@ namespace ImageToLego
 
         private void DynamicPanel_Click(object sender, EventArgs e)
         {
-            
+            int x, y;
+            CustomPanel clicked = (CustomPanel)sender;
+            x = clicked.x;
+            y = clicked.y;
+            MessageBox.Show(string.Format("x: {0} y: {1}", x, y));
         }
 
         private void BtnUpload_Click(object sender, EventArgs e)
@@ -74,6 +78,7 @@ namespace ImageToLego
         #endregion
 
         #region helper methods
+
         private void AdjustColors()
         {
             for (int i = 0; i < img.GetLength(0); i++)
@@ -95,7 +100,7 @@ namespace ImageToLego
             {
                 for (int y = 0; y < clr.GetLength(1); y++)
                 {
-                    var newPanel = new Panel
+                    var newPanel = new CustomPanel(x,y)
                     {
                         Size = new Size(tileSizeX, tileSizeY),
                         Location = new Point(
