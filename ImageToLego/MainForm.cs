@@ -19,8 +19,10 @@ namespace ImageToLego
         private string imagePath;
         private string CSVPath;
         private int threshold = 80;
+        private int lastClickedRow;
+        private Panel[,] output;
         private LegoPiece[,] individualPieces;
-
+        private bool first = true;
         #endregion globals
 
         public MainForm()
@@ -43,6 +45,20 @@ namespace ImageToLego
             x = clicked.x;
             y = clicked.y;
             Color[] aRow = img.Row(y);
+            if (first)
+            {
+                GreyOutRow(output.Row(y));
+                lastClickedRow = y;
+                first = false;
+            }
+            else
+            {
+                UnGreyRow(output.Row(lastClickedRow));
+                GreyOutRow(output.Row(y));
+                lastClickedRow = y;
+            }
+            
+           
             int size = 1; // minumum size
             List<LegoPiece> pieces = new List<LegoPiece>();
             LegoPiece piece;
@@ -80,6 +96,7 @@ namespace ImageToLego
 
         private void BtnUpload_Click(object sender, EventArgs e)
         {
+            first = true;
             string filter = "Image files(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) " +
                 "| *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             imagePath = FormHelper.FileUploadPrompt(filter);
@@ -108,6 +125,32 @@ namespace ImageToLego
         #endregion listeners
 
         #region helper methods
+        /// <summary>
+        /// this method takes a greyed out row and reverts it to its original colour
+        /// </summary>
+        /// <param name="row">row of panels</param>
+        private void UnGreyRow(Panel[] row)
+        {
+            foreach (var panel in row)
+            {
+                panel.BackColor = Color.FromArgb(panel.BackColor.R * 2, panel.BackColor.G * 2, panel.BackColor.B * 2);
+            }
+        }
+
+
+        /// <summary>
+        /// this method greys out a row of panels
+        /// </summary>
+        /// <param name="row">row of panels</param>
+        private void GreyOutRow(Panel[] row)
+        {
+            foreach (var panel in row)
+            {
+                panel.BackColor = Color.FromArgb(panel.BackColor.R/2, panel.BackColor.G / 2, panel.BackColor.B / 2);
+                //grey out colour here
+            }
+        }
+
 
         /// <summary>
         /// this method sets up the datagridview and populates it
@@ -147,7 +190,7 @@ namespace ImageToLego
         {
             int tileSizeX = placeholder.Width / clr.GetLength(0);
             int tileSizeY = placeholder.Height / clr.GetLength(1);
-            Panel[,] output = new Panel[clr.GetLength(0), clr.GetLength(1)];
+            output = new Panel[clr.GetLength(0), clr.GetLength(1)];
             individualPieces = new LegoPiece[clr.GetLength(0), clr.GetLength(1)];
             for (int x = 0; x < clr.GetLength(0); x++)
             {
@@ -226,5 +269,6 @@ namespace ImageToLego
         }
 
         #endregion helper methods
+
     }
 }
