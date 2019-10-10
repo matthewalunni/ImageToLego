@@ -130,7 +130,7 @@ namespace ImageToLego
         }
         #endregion listeners
 
-    #region helper methods
+        #region helper methods
 
         private List<LegoPiece> GetRowPieces(Color[] aRow)
         {
@@ -166,9 +166,9 @@ namespace ImageToLego
                 }
 
             }
-            
+
             return pieces;
-        } 
+        }
 
         /// <summary>
         /// this method takes a greyed out row and reverts it to its original colour
@@ -182,7 +182,6 @@ namespace ImageToLego
             }
         }
 
-
         /// <summary>
         /// this method greys out a row of panels
         /// </summary>
@@ -191,11 +190,10 @@ namespace ImageToLego
         {
             foreach (var panel in row)
             {
-                panel.BackColor = Color.FromArgb(panel.BackColor.R/2, panel.BackColor.G / 2, panel.BackColor.B / 2);
+                panel.BackColor = Color.FromArgb(panel.BackColor.R / 2, panel.BackColor.G / 2, panel.BackColor.B / 2);
                 //grey out colour here
             }
         }
-
 
         /// <summary>
         /// this method sets up the datagridview and populates it
@@ -263,56 +261,6 @@ namespace ImageToLego
             placeholder.Visible = false;
             return output;
         }
-
-        //unused
-        private void PopulateDataGridView()
-        {
-            //to be tested but in theory this method goes through each row of a
-            //array of colours and calculates how many neighbors to each pixel are and then
-            //adds them to a list of pieces..........
-
-            //now this seems to be working...
-            //its buggy now but could be useful for generating totals
-            LinkedList<LegoPiece> pieces = new LinkedList<LegoPiece>();
-            for (int i = 0; i < img.GetLength(0); i++)
-            {
-                LegoPiece aLegoPiece = new LegoPiece();
-                int rightNeighborCount = 0;
-                for (int j = 0; j < img.GetLength(1); j++)
-                {
-                    if (img[i, j].IsSimilar(img[i, j + 1], threshold))
-                    {
-                        rightNeighborCount++;
-                    }
-                    else
-                    {
-                        aLegoPiece = new LegoPiece(img[i, j], rightNeighborCount);
-
-                        break;
-                    }
-                }
-                pieces.AddLast(aLegoPiece);
-            }
-
-            LinkedList<string> csvLegoPieces = LegoPieceListToCSVList(pieces);
-            DataTable dt = TypeCoversions.ToDataTable(csvLegoPieces, ",");
-            dgvOutput.DataSource = dt;
-            //print list of lego pieces nicely into a datagrid view, then isolate this nightmare of
-            //logic that went on above
-        }
-
-        //unused
-        private LinkedList<string> LegoPieceListToCSVList(LinkedList<LegoPiece> pieces)
-        {
-            LinkedList<string> result = new LinkedList<string>();
-            foreach (var piece in pieces)
-            {
-                result.AddLast(piece.ToCSVLine());
-            }
-
-            return result;
-        }
-
         #endregion helper methods
 
 
