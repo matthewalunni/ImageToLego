@@ -35,8 +35,45 @@ namespace ImageToLego
         }
 
         #region listeners
+        private void BtnPrintReport_Click(object sender, EventArgs e)
+        {
+            int imgWidth = output.GetLength(0);
+            int imgHeight = output.GetLength(1);
+            List<LegoPiece> totalLEGOPieces = new List<LegoPiece>();
+            for (int i = 0; i < imgHeight; i++)
+            {
+                Panel[] rowPanels = output.Row(i);
+                Color[] rowPanelColors = new Color[rowPanels.Length];
+                for (int j = 0; j < rowPanels.Length; j++)
+                {
+                    rowPanelColors[j] = rowPanels[j].BackColor;
+                }
 
+                List<LegoPiece> rowPieces = GetRowPieces(rowPanelColors);
+                foreach (var piece in rowPieces)
+                {
+                    totalLEGOPieces.Add(piece);
+                }
+            }
 
+            List<string> csvOut = new List<string>();
+            var groupedByColor = totalLEGOPieces.OrderBy(p => p.color).GroupBy(p => p.color);
+            //foreach (var grouping in groupedByColor)
+            //{
+            //    var groupedBySize = grouping.OrderBy(p => p.size).GroupBy(p => p.size);
+            //    foreach (var group in groupedBySize)
+            //    {
+            //        Color groupColor = group.First().color;
+            //        string groupColorName = palette.FirstOrDefault(x => x.Value == groupColor).Key;
+            //        int groupPieceSize = group.First().size;
+            //        int numberOfPieces = group.Count();
+            //        string line = groupColorName + ", " + groupColor + ", " + groupPieceSize + ", " + numberOfPieces;
+            //        csvOut.Add(line);
+            //    }
+            //}
+
+            //Console.WriteLine("hei");
+        }
 
         private void DynamicPanel_Click(object sender, EventArgs e)
         {
@@ -57,41 +94,11 @@ namespace ImageToLego
                 GreyOutRow(output.Row(y));
                 lastClickedRow = y;
             }
-            
-           
-            int size = 1; // minumum size
-            List<LegoPiece> pieces = new List<LegoPiece>();
-            LegoPiece piece;
-            for (int i = 0; i < aRow.Length; i++)
-            {
-                if (i + 1 < aRow.Length)
-                {
-                    if (aRow[i].ClosestColor(palette.Values.ToList()).Equals(aRow[i + 1].ClosestColor(palette.Values.ToList())))
-                    {
-                        size++;
-                    }
-                    else
-                    {
-                        piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
-                        pieces.Add(piece);
-                        size = 1;
-                    }
-                }
-                else if (size >= aRow.Length)
-                {
-                    piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
-                    pieces.Add(piece);
-                }
-                else
-                {
-                    //last piece in row
-                    piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
-                    pieces.Add(piece);
-                    break;
-                }
-            }
 
+            List<LegoPiece> pieces = GetRowPieces(aRow);
             SetUpDataGridView(pieces);
+
+
         }
 
         private void BtnUpload_Click(object sender, EventArgs e)
@@ -121,10 +128,48 @@ namespace ImageToLego
             CSVPath = FormHelper.FileUploadPrompt(filter);
             tbCSVPath.Text = CSVPath;
         }
-
         #endregion listeners
 
-        #region helper methods
+    #region helper methods
+
+        private List<LegoPiece> GetRowPieces(Color[] aRow)
+        {
+            List<LegoPiece> pieces = new List<LegoPiece>();
+            LegoPiece piece;
+            int size = 1; // minumum size
+            for (int i = 0; i < aRow.Length; i++)
+            {
+                if (i + 1 < aRow.Length)
+                {
+                    if (aRow[i].ClosestColor(palette.Values.ToList()).Equals(aRow[i + 1].ClosestColor(palette.Values.ToList())))
+                    {
+                        size++;
+                    }
+                    else
+                    {
+                        piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
+                        pieces.Add(piece);
+                        size = 1;
+                    }
+                }
+                else if (size >= aRow.Length)
+                {
+                    piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
+                    pieces.Add(piece);
+                }
+                else
+                {
+                    //last piece in row
+                    piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
+                    pieces.Add(piece);
+                    break;
+                }
+
+            }
+            
+            return pieces;
+        } 
+
         /// <summary>
         /// this method takes a greyed out row and reverts it to its original colour
         /// </summary>
@@ -269,6 +314,7 @@ namespace ImageToLego
         }
 
         #endregion helper methods
+
 
     }
 }
