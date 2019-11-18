@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageToLego.Classes
 {
-  class LegoPiece
+  public class LegoPiece
   {
     private string colourName;
     public Color color;
@@ -37,7 +37,5 @@ namespace ImageToLego.Classes
     {
       return color.ToString() + ", " + size.ToString();
     }
-
-
   }
 }

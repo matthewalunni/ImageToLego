@@ -23,12 +23,13 @@ namespace ImageToLego.Helper
         ofd.FileName = "Upload a File";
         ofd.Filter = filter;
         ofd.Title = "Upload a File";
-
         if (ofd.ShowDialog() == DialogResult.OK)
         {
           try
           {
-            return ofd.FileName;
+            string filePath = ofd.FileName;
+            return filePath;
+
           }
           catch (Exception)
           {

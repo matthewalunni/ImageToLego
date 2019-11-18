@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageToLego.Helper
 {
@@ -17,14 +15,17 @@ namespace ImageToLego.Helper
     /// <returns>a 2D array of colours</returns>
     public static Color[,] IterateImageByPixel(string path)
     {
-      Bitmap bmp = new Bitmap( Image.FromFile(path) );
+      Bitmap bmp = new Bitmap(path);
 
       Color[,] result = new Color[bmp.Width, bmp.Height];
-
       for (int x = 0; x < bmp.Width; x++)
+      {
         for (int y = 0; y < bmp.Height; y++)
-          result[x, y] = bmp.GetPixel(x, y);
-
+        {
+          Color color = bmp.GetPixel(x, y);
+          result[x, y] = color;
+        }
+      }
       return result;
     }
   }
