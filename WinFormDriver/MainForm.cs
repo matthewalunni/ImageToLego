@@ -1,12 +1,12 @@
-﻿using ImageToLego.Classes;
-using ImageToLego.Extensions;
-using ImageToLego.Helper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ImageToLego.Classes;
+using ImageToLego.Extensions;
+using ImageToLego.Helper;
 
 namespace ImageToLego
 {
@@ -16,7 +16,6 @@ namespace ImageToLego
 
     private Color[,] img;
     private Dictionary<string, Color> palette;
-
     private int lastClickedRow;
     private Panel[,] output;
     private LegoPiece[,] individualPieces;
@@ -26,41 +25,18 @@ namespace ImageToLego
     public MainForm()
     {
       InitializeComponent();
-
-      imagePanel.BackColor = Color.Black;
+      panel1.BackColor = Color.Black;
       tbCSVPath.Text = ".\\colours.csv";
+      tbImagePath.Text = ".\\Test.png";
       FormHelper.AddDataGridViewHeaders(dgvOutput, "Color", "Size");
     }
 
     #region listeners
     private void BtnPrintReport_Click(object sender, EventArgs e)
     {
-      Dictionary<string, int> map = new Dictionary<string, int>();
-
       int imgWidth = output.GetLength(0);
       int imgHeight = output.GetLength(1);
       List<LegoPiece> totalLEGOPieces = new List<LegoPiece>();
-
-      for (int i = 0; i < imgHeight; i++)
-      {
-        for( int j = 0; j < imgWidth; j++)
-        {
-          Color c = output.Row(i)[j].BackColor.ClosestColor(palette.Values);
-          string name = c.PaletteName(palette);
-
-          if (map.Keys.Contains(name))
-            map[name]++;
-          else
-            map.Add(name, 1);
-        }
-      }
-
-      foreach(string c in map.Keys)
-      {
-        Console.WriteLine("{0} : {1}", c, map[c]);
-        //Console.WriteLine("{0},{1},{2} : {3}", c.R, c.G, c.B, map[c]);
-      }
-
       for (int i = 0; i < imgHeight; i++)
       {
         Panel[] rowPanels = output.Row(i);
@@ -79,19 +55,18 @@ namespace ImageToLego
 
       List<string> csvOut = new List<string>();
       var groupedByColor = totalLEGOPieces.OrderBy(p => p.color).GroupBy(p => p.color);
-
       //foreach (var grouping in groupedByColor)
       //{
-      //  var groupedBySize = grouping.OrderBy(p => p.size).GroupBy(p => p.size);
-      //  foreach (var group in groupedBySize)
-      //  {
-      //    Color groupColor = group.First().color;
-      //    string groupColorName = palette.FirstOrDefault(x => x.Value == groupColor).Key;
-      //    int groupPieceSize = group.First().size;
-      //    int numberOfPieces = group.Count();
-      //    string line = groupColorName + ", " + groupColor + ", " + groupPieceSize + ", " + numberOfPieces;
-      //    csvOut.Add(line);
-      //  }
+      //    var groupedBySize = grouping.OrderBy(p => p.size).GroupBy(p => p.size);
+      //    foreach (var group in groupedBySize)
+      //    {
+      //        Color groupColor = group.First().color;
+      //        string groupColorName = palette.FirstOrDefault(x => x.Value == groupColor).Key;
+      //        int groupPieceSize = group.First().size;
+      //        int numberOfPieces = group.Count();
+      //        string line = groupColorName + ", " + groupColor + ", " + groupPieceSize + ", " + numberOfPieces;
+      //        csvOut.Add(line);
+      //    }
       //}
 
       //Console.WriteLine("hei");
@@ -103,7 +78,6 @@ namespace ImageToLego
       CustomPanel clicked = (CustomPanel)sender;
       x = clicked.x;
       y = clicked.y;
-
       Color[] aRow = img.Row(y);
       if (first)
       {
@@ -127,17 +101,16 @@ namespace ImageToLego
     private void BtnUpload_Click(object sender, EventArgs e)
     {
       first = true;
+
       string filter = "Image files(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-      
-      tbImagePath.Text = FormHelper.FileUploadPrompt(filter);
+      string work = FormHelper.FileUploadPrompt(filter);
+
+      if (!String.IsNullOrEmpty(work))
+        tbImagePath.Text = work;
 
       if (FormHelper.ControlsAreFilled(tbCSVPath, tbImagePath))
       {
-        img = ImageHelper.IterateImageByPixel(tbImagePath.Text);
-        palette = PaletteProcessor.CreatePalette(tbCSVPath.Text);
-
-        AdjustColors();
-        DisplayGrid(img, imagePanel);
+        RefreshDisplay();
       }
       else
       {
@@ -148,11 +121,24 @@ namespace ImageToLego
     private void BtnColorPalette_Click(object sender, EventArgs e)
     {
       string filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-      tbCSVPath.Text = FormHelper.FileUploadPrompt(filter);
+      string work = FormHelper.FileUploadPrompt(filter);
+
+      if (!String.IsNullOrEmpty(work))
+        tbCSVPath.Text = work;
+
+      RefreshDisplay();
     }
     #endregion listeners
 
     #region helper methods
+
+    private void RefreshDisplay()
+    {
+      img = ImageHelper.IterateImageByPixel(tbImagePath.Text);
+      palette = new PaletteProcessor(tbCSVPath.Text).ColorPalette;
+      AdjustColors();
+      DisplayGrid(img, panel1);
+    }
 
     private List<LegoPiece> GetRowPieces(Color[] aRow)
     {
@@ -163,26 +149,26 @@ namespace ImageToLego
       {
         if (i + 1 < aRow.Length)
         {
-          if (aRow[i].ClosestColor(palette.Values).Equals(aRow[i + 1].ClosestColor(palette.Values) ))
+          if (aRow[i].ClosestColor(palette.Values.ToList()).Equals(aRow[i + 1].ClosestColor(palette.Values.ToList())))
           {
             size++;
           }
           else
           {
-            piece = new LegoPiece(aRow[i].ClosestColor(palette.Values), size);
+            piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
             pieces.Add(piece);
             size = 1;
           }
         }
         else if (size >= aRow.Length)
         {
-          piece = new LegoPiece(aRow[i].ClosestColor(palette.Values), size);
+          piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
           pieces.Add(piece);
         }
         else
         {
           //last piece in row
-          piece = new LegoPiece(aRow[i].ClosestColor(palette.Values), size);
+          piece = new LegoPiece(aRow[i].ClosestColor(palette.Values.ToList()), size);
           pieces.Add(piece);
           break;
         }
@@ -199,7 +185,9 @@ namespace ImageToLego
     private void UnGreyRow(Panel[] row)
     {
       foreach (var panel in row)
+      {
         panel.BackColor = Color.FromArgb(panel.BackColor.R * 2, panel.BackColor.G * 2, panel.BackColor.B * 2);
+      }
     }
 
     /// <summary>
@@ -209,7 +197,10 @@ namespace ImageToLego
     private void GreyOutRow(Panel[] row)
     {
       foreach (var panel in row)
+      {
         panel.BackColor = Color.FromArgb(panel.BackColor.R / 2, panel.BackColor.G / 2, panel.BackColor.B / 2);
+        //grey out colour here
+      }
     }
 
     /// <summary>
@@ -232,8 +223,12 @@ namespace ImageToLego
     private void AdjustColors()
     {
       for (int i = 0; i < img.GetLength(0); i++)
+      {
         for (int j = 0; j < img.GetLength(1); j++)
-          img[i, j] = img[i, j].ClosestColor(palette.Values);
+        {
+          img[i, j] = img[i, j].ClosestColor(palette.Values.ToList());
+        }
+      }
     }
 
     /// <summary>
@@ -246,10 +241,8 @@ namespace ImageToLego
     {
       int tileSizeX = placeholder.Width / clr.GetLength(0);
       int tileSizeY = placeholder.Height / clr.GetLength(1);
-
       output = new Panel[clr.GetLength(0), clr.GetLength(1)];
       individualPieces = new LegoPiece[clr.GetLength(0), clr.GetLength(1)];
-
       for (int x = 0; x < clr.GetLength(0); x++)
       {
         for (int y = 0; y < clr.GetLength(1); y++)
@@ -257,7 +250,10 @@ namespace ImageToLego
           var newPanel = new CustomPanel(x, y)
           {
             Size = new Size(tileSizeX, tileSizeY),
-            Location = new Point(tileSizeX * x + placeholder.Location.X, tileSizeY * y + placeholder.Location.Y ),
+            Location = new Point(
+                  tileSizeX * x + placeholder.Location.X,
+                  tileSizeY * y + placeholder.Location.Y
+                  ),
             BackColor = clr[x, y],
             BorderStyle = BorderStyle.FixedSingle
           };

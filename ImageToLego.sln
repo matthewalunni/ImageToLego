@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29209.62
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToLego", "ImageToLego\ImageToLego.csproj", "{B267E8C7-9C44-49D5-8828-3B9B2FBFB982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToLego", "WinFormDriver\WinFormDriver.csproj", "{B267E8C7-9C44-49D5-8828-3B9B2FBFB982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineDriver", "CommandLine\CommandLineDriver.csproj", "{D0C1FE35-830F-43DA-8621-C314E000D8E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{25D9B41A-563A-4D1F-8206-7BFD2F40F462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{B267E8C7-9C44-49D5-8828-3B9B2FBFB982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B267E8C7-9C44-49D5-8828-3B9B2FBFB982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B267E8C7-9C44-49D5-8828-3B9B2FBFB982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C1FE35-830F-43DA-8621-C314E000D8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C1FE35-830F-43DA-8621-C314E000D8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C1FE35-830F-43DA-8621-C314E000D8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C1FE35-830F-43DA-8621-C314E000D8E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D9B41A-563A-4D1F-8206-7BFD2F40F462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D9B41A-563A-4D1F-8206-7BFD2F40F462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D9B41A-563A-4D1F-8206-7BFD2F40F462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D9B41A-563A-4D1F-8206-7BFD2F40F462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
