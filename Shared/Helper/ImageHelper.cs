@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ImageToLego.Helper
 {
-  class ImageHelper
+  public class ImageHelper
   {
     /// <summary>
     /// this method iterates through the pixels of an image and returns a 2D array of 

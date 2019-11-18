@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Shared</RootNamespace>
-    <AssemblyName>Shared</AssemblyName>
+    <AssemblyName>ImageToLego.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,8 +45,14 @@
     <Compile Include="Classes\PaletteProcessor.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Helper\CSVTools.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Helper\TwoDimensionalArrayHelper.cs" />
     <Compile Include="Helper\TypeCoversions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\colours.csv" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

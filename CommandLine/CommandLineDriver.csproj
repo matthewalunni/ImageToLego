@@ -7,7 +7,7 @@
     <ProjectGuid>{D0C1FE35-830F-43DA-8621-C314E000D8E1}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>CommandLine</RootNamespace>
-    <AssemblyName>CommandLine</AssemblyName>
+    <AssemblyName>ImageToLego.CmdDriver</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -55,4 +55,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)Shared\Resources\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
