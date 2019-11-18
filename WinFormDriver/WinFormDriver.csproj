@@ -53,8 +53,6 @@
     <Compile Include="Classes\CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="Helper\TwoDimensionalArrayHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,9 +91,7 @@
   <ItemGroup>
     <Content Include="LEGO.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{25d9b41a-563a-4d1f-8206-7bfd2f40f462}</Project>
@@ -103,4 +99,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)Shared\Resources\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
