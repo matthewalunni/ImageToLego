@@ -34,6 +34,7 @@ namespace PaletteNormalizer
     }
     #endregion
 
+    #region Event Handlers
     private void NewImage_Click(object sender, EventArgs e)
     {
       string filter = ConfigurationManager.AppSettings["ImageFileSpec"];
@@ -80,42 +81,21 @@ namespace PaletteNormalizer
 
     private void Update_Click(object sender, EventArgs e)
     {
-
+      RefreshDisplay();
     }
 
     private void Save_Click(object sender, EventArgs e)
     {
-
+      picRendered.Image.Save("Rendered.png", System.Drawing.Imaging.ImageFormat.Png);
     }
 
-    public static string FileUploadPrompt(string filter)
+    private void NewPanel_Click(object sender, EventArgs e)
     {
-      using (OpenFileDialog ofd = new OpenFileDialog())
-      {
-        ofd.InitialDirectory = Directory.GetCurrentDirectory();
-        ofd.Filter = filter;
-        ofd.Title = "Upload a File";
-
-        if (ofd.ShowDialog() == DialogResult.OK)
-        {
-          try
-          {
-            string filePath = ofd.FileName;
-            return filePath;
-
-          }
-          catch (Exception)
-          {
-            throw;
-          }
-        }
-        else
-        {
-          return null;
-        }
-      }
+      CustomPanel src = (CustomPanel)sender;
     }
+    #endregion
 
+    #region UI methods
     private void RefreshDisplay()
     {
       NormalizeToPalette();
@@ -124,10 +104,12 @@ namespace PaletteNormalizer
 
     private void NormalizeToPalette()
     {
-      using (Bitmap originalImage = new Bitmap(picOriginal.Image))
+      try
       {
-        using (Bitmap renderedImage = new Bitmap(originalImage.Width, originalImage.Height))
+        using (Bitmap originalImage = new Bitmap(picOriginal.Image))
         {
+          // Can't generate the rendered image here in a using statement as the image will be null in future repaints of the picturebox
+          Bitmap renderedImage = new Bitmap(originalImage.Width, originalImage.Height);
           for (int x = 0; x < originalImage.Width; x++)
           {
             for (int y = 0; y < originalImage.Height; y++)
@@ -147,8 +129,11 @@ namespace PaletteNormalizer
           picRendered.Image = renderedImage;
         }
       }
-    }
+      catch (Exception ex)
+      {
 
+      }
+    }
 
     private void DisplayPalette()
     {
@@ -162,43 +147,45 @@ namespace PaletteNormalizer
       int tileSizeX = pnlPalette.Width / actualCols;
       int tileSizeY = pnlPalette.Height / rows;
 
-      for (int x = 0; x < actualCols; x++)
+      try
       {
-        for (int y = 0; y < rows; y++)
+        for (int x = 0; x < actualCols; x++)
         {
-          if (paletteOffset < palette.Keys.Count)
+          for (int y = 0; y < rows; y++)
           {
-            int pX = tileSizeX * x + pnlPalette.Location.X;
-            int pY = tileSizeY * y + pnlPalette.Location.Y;
-            //Console.WriteLine("C:{0} @ ({1},{2})", palette.Values.ElementAt(paletteOffset), pX, pY);
-
-            var newPanel = new CustomPanel(x, y, new ColorTuple(palette.Keys.ElementAt(paletteOffset), palette.Values.ElementAt(paletteOffset)))
+            if (paletteOffset < palette.Keys.Count)
             {
-              Size = new Size(tileSizeX, tileSizeY),
-              Location = new Point(pX, pY),
-              BackColor = palette.Values.ElementAt(paletteOffset++)
-            };
+              int pX = tileSizeX * x + pnlPalette.Location.X;
+              int pY = tileSizeY * y + pnlPalette.Location.Y;
+              Console.WriteLine("C:{0} @ ({1},{2})", palette.Values.ElementAt(paletteOffset), pX, pY);
 
-            Controls.Add(newPanel);
-            newPanel.Click += NewPanel_Click;
+              var newPanel = new CustomPanel(x, y, new ColorTuple(palette.Keys.ElementAt(paletteOffset), palette.Values.ElementAt(paletteOffset)))
+              {
+                Size = new Size(tileSizeX, tileSizeY),
+                Location = new Point(pX, pY),
+                BackColor = palette.Values.ElementAt(paletteOffset++)
+              };
+
+              Controls.Add(newPanel);
+              newPanel.Click += NewPanel_Click;
+            }
+            else
+            {
+              break;
+            }
           }
-          else
-          {
+
+          if (paletteOffset >= palette.Keys.Count)
             break;
-          }
         }
-
-        if (paletteOffset >= palette.Keys.Count)
-          break;
+      }
+      catch (Exception ex)
+      {
       }
 
       pnlPalette.Visible = false;
     }
 
-    private void NewPanel_Click(object sender, EventArgs e)
-    {
-      CustomPanel src = (CustomPanel)sender;
-    }
 
     private void AResizableImageOrPictureBoxMethodToBeImplemented()
     {
@@ -223,5 +210,35 @@ namespace PaletteNormalizer
       pictureBox.Height = getHeight;
       */
     }
+    #endregion
+
+    #region Utility methods
+    private string FileUploadPrompt(string filter)
+    {
+      using (OpenFileDialog ofd = new OpenFileDialog())
+      {
+        ofd.InitialDirectory = Directory.GetCurrentDirectory();
+        ofd.Filter = filter;
+        ofd.Title = "Upload a File";
+
+        if (ofd.ShowDialog() == DialogResult.OK)
+        {
+          try
+          {
+            return ofd.FileName;
+          }
+          catch (Exception)
+          {
+            throw;
+          }
+        }
+        else
+        {
+          return null;
+        }
+      }
+    }
+    #endregion
+
   }
 }
